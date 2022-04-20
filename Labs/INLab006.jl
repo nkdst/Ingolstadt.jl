@@ -264,9 +264,9 @@
 		easily reuse this encapsulated code to display a completely different function:
 		
 		mountains(x,y) =
-			3 * (1-x)^2 *				exp(-(x^2+(y+1)^2))
-			-(1/3) *					exp(-((x+1)^2 + y^2))
-			-10 * (x/5 - x^3 - y^5) *	exp(-(x^2+y^2))
+			3 * (1-x)^2 *				exp(-(x^2+(y+1)^2)) -
+			(1/3) *					exp(-((x+1)^2 + y^2)) -
+			10 * (x/5 - x^3 - y^5) *	exp(-(x^2+y^2))
 		prettyheatmap( mountains)
 
 		How many mountains can you see?
