@@ -149,7 +149,7 @@
 		calculate the vector qlevels (quantum levels), using the value 5 instead of nbits.
 
 		Notice how qlevels first contains the sequence [1/2,1/4,1/8,1/16,...], and then these
-		numbers are divided by their sum, so that finally the sum of all values in qulevels is
+		numbers are divided by their sum, so that finally the sum of all values in qlevels is
 		equal to 1. Is qlevels a row vector or a column vector?
 		""",
 		"",
