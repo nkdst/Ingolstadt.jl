@@ -10,7 +10,7 @@
 		"""
 		GAs showed us how useful random processes can be for finding the solution to problems.
 		Indeed, the entire field of biology is concerned with the way living organisms use
-		random processes to solve problems. Notice this does not mean biological process are
+		random processes to solve problems. Notice this does not mean biological processes are
 		random: the breakdown of starch by ptyalin in your mouth follows a random path, yet it
 		is absolutely certain that the starch will be broken down. However, we think of organisms
 		as CHOOSING what to do. That is, they respond creatively to conditions by guiding their
@@ -33,7 +33,7 @@
 	),
 	Activity(
 		"""
-		Transcription factors influnce dynamics in the cell at concentrations of around 1nM
+		Transcription factors influence dynamics in the cell at concentrations of around 1nM
 		(i.e., nanomoles per litre). Use this value to calculate the total number of
 		transcription factor molecules inside the E.coli cell:
 		""",
