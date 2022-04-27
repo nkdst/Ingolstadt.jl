@@ -153,6 +153,7 @@
 		to do is find the minimum value of a curve given just a few data points. For example,
 		suppose we know that the following data has a minimum value somewhere:
 
+			using SpecialFunctions
 			data = besselj.(6,9:.5:15);
 
 		As a first approximation, use the findmin function to find the position of the minimum
