@@ -257,7 +257,7 @@
 
 		You can see this idea in action by entering the following yellow line in your figure:
 
-			lines!(x,2x,color=:yellow)
+			lines!(t,2t,color=:yellow)
 			current_figure()
 
 		At approximately which value of t is the curve parallel to the straight line
