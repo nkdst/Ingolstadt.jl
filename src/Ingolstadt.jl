@@ -46,7 +46,7 @@ the session accordingly.
 
 # Examples
 ```julia
-julia> letsgo!("Niall")
+julia> letsgo("Niall")
 Hi Niall! Wait just half a second ...
 ```
 """
