@@ -17,7 +17,7 @@ using Random # hides
 using InteractiveDynamics
 using GLMakie
 include("./AgentToolBox.jl")
-import .AgentToolBox: rotate_2dvector, turn_left, turn_right, diffuse4, remap_resetButton!, wrapMat, eigvec, is_empty_patch
+import .AgentToolBox: rotate_2dvector, turn_left, turn_right, diffuse4, wrapMat, eigvec, is_empty_patch
 
 # means plasmodium or nutrition source. unfortunately we can only create one agent per model
 mutable struct plasmnutri10 <: AbstractAgent
@@ -171,7 +171,7 @@ set nutrients, evaporate and diffuse chemoattractants
 function nicheDynamics(model::ABM)
 	#emmit nutrients
 	map(model.nuts) do x
-		model.u[x[1], x[2]] += model.nahrung
+		model.u[x[1], x[2]] += model.food
 	end
 	#evaporate
 	model.u .*= (1 - model.rEvapU)

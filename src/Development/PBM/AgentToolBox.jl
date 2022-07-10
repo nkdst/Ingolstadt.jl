@@ -162,7 +162,13 @@ function buildDeJong7(worldsize)
 end
 
 # -------
+"""
+diffuse4(mat::Matrix{Float64}, rDiff::Float64, wrapmat::Bool)
+takes a matrix with values to be diffused, a diffusionrate and a boolean. Returns the diffused matrix.
+The functin iterates through the mat matrix. For each value in the matrix it takes the percentage of its value, 
+given by rDiff and splits it up to its neuman 4 neighborhood
 
+"""
 function diffuse4(mat::Matrix{Float64}, rDiff::Float64, wrapmat)
 	size_row = size(mat)[1]
 	size_col = size(mat)[2]
