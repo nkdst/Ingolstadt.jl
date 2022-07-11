@@ -1,7 +1,7 @@
 #Author: Emilio Borrelli, translated from 12_Kull by Prof. Nial Pallfreyman
 module Kull
 
-export Turtle1, demo1
+export Turtle1, demo
 """
 We usually think of evolution as being driven by a random genetic mutation that happens to improve an organism's ability to produce offspring. 
 Yet it is possible to show mathematically that such purely random changes would need far longer than the current age of the Earth to produce organisms as complex as ourselves. 
@@ -188,7 +188,7 @@ end
 
 
 
-function demo1()
+function demo()
 
 	model = initialize_model()
 
