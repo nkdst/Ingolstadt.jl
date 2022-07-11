@@ -1,5 +1,5 @@
 module DAH
-	export Cell2, demo2
+	export Cell2, demo2, demo
 """
 Stuart Newman and Gerd Müller base an entire theory of morphogenesis on Newman's Differential Adhesion Hypothesis (DAH), 
 which suggests that developing organisms structure their tissue into a body by using a series of adhesive molecules of varying strengths.
