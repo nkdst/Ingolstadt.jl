@@ -1,5 +1,5 @@
 module Plasmodium
-export plasmnutri10, demo4, model
+export plasmnutri10, demo, model
 
 
 """
@@ -213,7 +213,7 @@ function sniff_ahead(agent::AbstractAgent, model::ABM)
 	return model.u[sniffpos[1], sniffpos[2]]
 end
 
-function demo4()
+function demo()
 	plotkwargs = (
 		add_colorbar=false,
 		heatarray=:cMap,
