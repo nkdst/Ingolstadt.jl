@@ -17,7 +17,8 @@ import InteractiveUtils: @which		# ...
 
 
 export choosecolor, diffuse4, diffuse8, eigvec, is_empty_patch, mean_nb, neighbors4, nonwrap_nb,
-	polygon_marker, reinit_model_on_reset!, rotate_2dvector, turn_right,turn_left, wrapMat
+	polygon_marker, reinit_model_on_reset!, rotate_2dvector, turn_right,turn_left, wrapMat,
+	neuman_neighbourhood
 
 
 
@@ -87,9 +88,13 @@ function turn_left(agent::AbstractAgent, angle)
 end
 
 
-# general functions ------------------------------------------------------------
+"""
+	eigvec(vector)
 
-# TODO: description!!!
+creates the eigenvector of an tuple
+this function uses linear transformation to
+scale an tuple. 
+"""
 function eigvec(vector)
 	if (vector == Tuple([0.0, 0.0]))
 		return Tuple([0.0, 0.0])
@@ -161,24 +166,29 @@ function buildDeJong7(worldsize)
 	f.(xy, xy')
 end
 
-# -------
 """
-diffuse4(mat::Matrix{Float64}, rDiff::Float64, wrapmat::Bool)
-takes a matrix with values to be diffused, a diffusionrate and a boolean. Returns the diffused matrix.
+	diffuse4(mat::Matrix{Float64}, rDiff::Float64, wrapmat::Bool)
+
+mat defines the matrix 
+rDiff defines the difussion rotate
+wrapmat decides if the model should wrap the matrix or not
+neighbors returns the indices in cartician indices
+
+Takes a matrix with values to be diffused, a diffusionrate and a boolean. Returns the diffused matrix.
 The functin iterates through the mat matrix. For each value in the matrix it takes the percentage of its value, 
 given by rDiff and splits it up to its neuman 4 neighborhood
-
 """
-function diffuse4(mat::Matrix{Float64}, rDiff::Float64, wrapmat)
+
+function diffuse4(mat::Matrix{Float64}, rDiff::Float64, wrapmat::Bool)
 	size_row = size(mat)[1]
 	size_col = size(mat)[2]
 	map(CartesianIndices((1:size(mat)[1], 1:size(mat)[2]))) do x
 
 		if (x[1] == 1 || x[1] == size_row || x[2] == 1 || x[2] == size_col)
 			if (wrapmat == true)
-				neighbours = wrapMat(size_row, size_col, neuman_neighborhood(x[1], x[2]))
+				neighbours = wrapMat(size_row, size_col, neuman_neighbourhood(x[1], x[2]))
 			elseif (wrapmat == false)
-				neighbours = nonwrap_nb(size_row, size_col, neuman_neighborhood(x[1], x[2]))
+				neighbours = nonwrap_nb(size_row, size_col, neuman_neighbourhood(x[1], x[2]))
 			end
 		else
 			neighbours = neumann_cartini(size_col, x[1], x[2])
@@ -190,6 +200,12 @@ function diffuse4(mat::Matrix{Float64}, rDiff::Float64, wrapmat)
 	return mat
 end
 
+"""
+	nonwrap_nb(size_row, size_col, index::Vector{Vector{Int64}})
+
+return the cartesian indices that are inside the world.
+indices outside the world will not be used.
+"""
 function nonwrap_nb(size_row, size_col, index::Vector{Vector{Int64}})
 	sumup = []
 	for ids in 1:size(index)[1]
@@ -200,19 +216,37 @@ function nonwrap_nb(size_row, size_col, index::Vector{Vector{Int64}})
 	end
 	return sumup
 end
+"""
+	neuman_neighbourhood(rowindex, colindex)
 
-function neuman_neighborhood(rowindex, colindex)
+Creates an neumann_neighborhood.
+Gets the patch on the left on the right ont the
+top and the bottom. 
+returns indices in pairs
+"""
+function neuman_neighbourhood(rowindex, colindex)
 	i = rowindex
 	j = colindex
 	return [[i + 1, j], [i - 1, j], [i, j - 1], [i, j + 1]]
 end
 
+"""
+	cartesian_indices(size_col, rowindex, colindex)
+
+converts inidices into cartesian_indices
+"""
 function cartesian_indices(size_col, rowindex, colindex)
 	i = rowindex
 	j = colindex
 	return (j - 1) * size_col + i
 end
 
+"""
+	neumann_cartini(size_col, rowindex, colindex)
+
+return the von neumann neighborhood in 
+cartesian indices
+"""
 function neumann_cartini(size_col, rowindex, colindex)
 	i = rowindex
 	j = colindex
@@ -228,7 +262,7 @@ end
 Function for diffusing all values of a matrix to their respective 8 surrounding tiles.
 Size of model and diffuse_matrix have to match.
 """
-function diffuse8(model, diffuse_value, diffusion_rate)
+function diffuse8(model::AgentBasedModel, diffuse_value::Matrix{Float64}, diffusion_rate::Float64)
 	# Create new matrix to not interfere with the current values of diffuse_value
 	newMatrix = zeros(Float64, size(diffuse_value))
 
@@ -268,11 +302,12 @@ end
 
 
 """
-	check_boundaries(position_kernel, model_extent)
+check_boundaries(position_kernel, model_extent)
 
 Function for checking if a position_kernel contains out-of-bounds inidices and fixes them.
+This function is only used as background-logic for diffuse8.
 """
-function check_boundaries(position_kernel, model_extent)
+function check_boundaries(position_kernel::Matrix{Tuple{Int64, Int64}}, model_extent::Tuple{Int64, Int64})
 
 	n_rows, n_columns = model_extent
 
@@ -301,7 +336,7 @@ end
 Collects all agents ids that are on the 4 adjacent spots to the agents position
 or on the agents spot itself.
 """
-function neighbors4(agent, model)
+function neighbors4(agent::AbstractAgent, model::AgentBasedModel)
 
 	near_agents = nearby_agents(agent, model, 2)
 	list_of_ids = []
@@ -321,9 +356,10 @@ end
 
 Tests if an agent is inside another agents direct neighborhood, that being the four
 patches directly next to the central_agents patch or at the central_agents patch itself.
+This function is only used as background-logic for neighbors4.
 """
 
-function is_agent_in_neighbors4(central_agent, test_agent)
+function is_agent_in_neighbors4(central_agent::AbstractAgent, test_agent::AbstractAgent)
 
 	ca_x, ca_y = ceil.(central_agent.pos)
 	ta_x, ta_y = ceil.(test_agent.pos)
